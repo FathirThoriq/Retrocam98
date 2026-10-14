@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>RetroCam 98 — Studio</title>
+<link rel="stylesheet" href="studio.css">
+</head>
+<body>
+<header class="titlebar">
+  <span class="logo">▣ RETROCAM 98</span>
+  <span class="titlebar-sub">STUDIO KAMERA</span>
+  <span class="led-wrap"><span id="ledCam" class="led"></span><span id="ledCamText">KAMERA MATI</span></span>
+</header>
+
+<main>
+  <!-- PREVIEW -->
+  <section class="panel preview-panel">
+    <div class="panel-title">PRATINJAU — <span id="previewCamName">BELUM ADA KAMERA</span></div>
+    <div class="preview-frame">
+      <div class="preview-wrap" id="previewWrap">
+        <video id="preview" autoplay playsinline muted></video>
+        <div class="scanlines"></div>
+        <span class="bracket tl"></span><span class="bracket tr"></span>
+        <span class="bracket bl"></span><span class="bracket br"></span>
+        <div class="osd osd-top-left"><span class="rec-dot" id="recDot"></span> REC <span id="timecode">0:00:00</span></div>
+        <div class="osd osd-top-right">SP <span class="battery" aria-hidden="true"><i></i><i></i><i></i></span></div>
+        <div class="osd osd-bottom-left" id="datestamp">--</div>
+        <div class="osd osd-bottom-right" id="osdRes">— × —</div>
+        <div class="preview-empty" id="previewEmpty">
+          <p>Kamera belum dinyalakan.</p>
+          <p class="hint">Tekan tombol AKTIFKAN KAMERA — izin kamera hanya diminta setelah tombol itu ditekan.</p>
+        </div>
+      </div>
+    </div>
+    <div class="cam-row">
+      <label class="fld-label" for="cameraSelect">KAMERA</label>
+      <select id="cameraSelect"></select>
+      <button id="btnEnable" class="btn primary" type="button">AKTIFKAN KAMERA</button>
+      <button id="btnRefresh" class="btn" type="button" title="Muat ulang daftar kamera">↻</button>
+    </div>
+    <p id="statusText" class="status" role="status">Kamera belum aktif.</p>
+  </section>
+
+  <!-- TOGGLE UTAMA -->
+  <section class="panel">
+    <div class="panel-title">PENERAPAN</div>
+    <label class="switch-row">
+      <span><span class="led" id="ledAuto"></span> TERAPKAN OTOMATIS DI GOOGLE MEET</span>
+      <input type="checkbox" id="tglAuto" checked>
+    </label>
+    <label class="switch-row">
+      <span><span class="led" id="ledSw"></span> MODE SOFTWARE (CANVAS)</span>
+      <input type="checkbox" id="tglSoftware">
+    </label>
+    <p class="hint">Mode Software memproses gambar lewat canvas (maks. 720p / 30 fps) — untuk kontrol yang tidak diekspos driver kamera ini. Nilai software tampil di pratinjau Studio dan berlaku di Meet selama Mode Software menyala.</p>
+  </section>
+
+  <!-- PRESET -->
+  <section class="panel">
+    <div class="panel-title">PRESET — <span id="activePresetName">DEFAULT KAMERA</span></div>
+    <div class="chips" id="presetChips"></div>
+    <div class="chips" id="customChips"></div>
+    <div class="save-row">
+      <input id="customName" type="text" placeholder="Nama preset baru…" maxlength="40">
+      <button id="btnSavePreset" class="btn" type="button">SIMPAN PRESET</button>
+      <button id="btnReset" class="btn danger" type="button">RESET</button>
+    </div>
+  </section>
+
+  <!-- AUTO: SETTING TERBAIK -->
+  <section class="panel">
+    <div class="panel-title">AUTO — SETTING TERBAIK</div>
+    <button id="btnAuto" class="btn auto-btn" type="button">AUTO — CARI SETTING TERBAIK</button>
+    <p class="hint">Menganalisis gambar kamera yang sedang menyala (terang, warna, kontras, ketajaman), lalu menerapkan koreksinya — termasuk menyapu fokus bila hardware mendukung. Hasilnya tersimpan sebagai preset "Auto Terbaik" dan dipakai juga di Google Meet.</p>
+    <div id="autoReport" class="auto-report hidden">
+      <div class="auto-report-title">LAPORAN AUTO</div>
+      <div id="autoStats" class="auto-stats"></div>
+      <ul id="autoReasons" class="auto-reasons"></ul>
+      <p id="autoClosing" class="auto-closing"></p>
+    </div>
+  </section>
+
+  <!-- KONTROL -->
+  <section class="panel">
+    <div class="tabs" role="tablist">
+      <button class="tab active" data-tab="gambar" role="tab" type="button">GAMBAR</button>
+      <button class="tab" data-tab="cahaya" role="tab" type="button">CAHAYA</button>
+      <button class="tab" data-tab="fokus" role="tab" type="button">FOKUS &amp; BINGKAI</button>
+      <button class="tab" data-tab="format" role="tab" type="button">FORMAT</button>
+    </div>
+    <div class="tab-page" id="page-gambar"></div>
+    <div class="tab-page hidden" id="page-cahaya"></div>
+    <div class="tab-page hidden" id="page-fokus"></div>
+    <div class="tab-page hidden" id="page-format">
+      <div class="ctrl">
+        <label class="fld-label" for="resSelect">RESOLUSI</label>
+        <select id="resSelect"></select>
+      </div>
+      <div class="ctrl">
+        <label class="fld-label" for="fpsSelect">FRAME RATE</label>
+        <select id="fpsSelect"></select>
+      </div>
+      <p class="hint">Resolusi dan frame rate dipilih dari rentang yang dilaporkan kamera ini, lalu kamera dimulai ulang dengan format terpilih.</p>
+    </div>
+    <p id="applyReport" class="status small" role="status"></p>
+  </section>
+
+  <section class="panel">
+    <div class="panel-title">CATATAN PER SISTEM</div>
+    <ul class="notes">
+      <li><b>Windows</b> — kontrol hardware biasanya paling lengkap.</li>
+      <li><b>Linux</b> — tergantung driver kamera dan browser; sebagian kontrol muncul, sisanya lewat Mode Software.</li>
+      <li><b>macOS</b> — paling terbatas, terutama kamera internal; Mode Software jadi andalan.</li>
+    </ul>
+    <p class="hint">Semua pemrosesan lokal di browser ini. Tidak ada server, tidak ada unggahan gambar.</p>
+  </section>
+</main>
+
+<script src="core.js"></script>
+<script src="studio.js"></script>
+</body>
+</html>

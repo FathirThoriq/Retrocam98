@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<title>RetroCam 98</title>
+<link rel="stylesheet" href="popup.css">
+</head>
+<body>
+<header class="titlebar">
+  <span class="logo">▣ RETROCAM 98</span>
+  <span class="led-wrap"><span id="led" class="led"></span><span id="ledText">—</span></span>
+</header>
+
+<div class="preview-frame">
+  <div class="preview-wrap">
+    <video id="preview" autoplay playsinline muted></video>
+    <div class="scanlines"></div>
+    <span class="bracket tl"></span><span class="bracket br"></span>
+    <div class="osd osd-tl"><span class="rec-dot"></span> REC</div>
+    <div class="osd osd-tr">SP</div>
+    <div class="osd osd-bl" id="datestamp">--</div>
+    <div class="preview-empty" id="previewEmpty">Pratinjau mati</div>
+  </div>
+</div>
+<button id="btnPreview" class="btn" type="button">NYALAKAN PRATINJAU</button>
+
+<section class="panel">
+  <div class="panel-title">PRESET AKTIF — <span id="activeName">DEFAULT KAMERA</span></div>
+  <div class="chips" id="chips"></div>
+  <p class="hint">Chip menulis preset aktif untuk Google Meet. Atur lengkapnya di Studio.</p>
+  <button id="btnAutoBest" class="btn auto" type="button">AUTO TERBAIK</button>
+  <p class="hint">Auto Terbaik: analisis gambar berjalan otomatis di Meet saat kamera dinyalakan, memakai setting tersimpan terakhir sebagai titik awal.</p>
+</section>
+
+<button id="btnStudio" class="btn primary" type="button">BUKA STUDIO</button>
+<p class="status" id="statusText" role="status"></p>
+
+<script src="core.js"></script>
+<script src="popup.js"></script>
+</body>
+</html>
