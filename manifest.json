@@ -1,0 +1,54 @@
+{
+  "action": {
+    "default_icon": {
+      "128": "icons/icon128.png",
+      "16": "icons/icon16.png",
+      "48": "icons/icon48.png"
+    },
+    "default_popup": "popup.html",
+    "default_title": "RetroCam 98"
+  },
+  "background": {
+    "service_worker": "background.js"
+  },
+  "content_scripts": [
+    {
+      "js": [
+        "bridge.js"
+      ],
+      "matches": [
+        "https://meet.google.com/*"
+      ],
+      "run_at": "document_start"
+    },
+    {
+      "js": [
+        "inject-main.js"
+      ],
+      "matches": [
+        "https://meet.google.com/*"
+      ],
+      "run_at": "document_start",
+      "world": "MAIN"
+    }
+  ],
+  "description": "Pengatur kamera lengkap untuk meeting di browser: brightness, exposure, white balance, fokus, zoom, dan preset — dengan mode software untuk kamera yang tidak mengekspos kontrol hardware.",
+  "host_permissions": [
+    "https://meet.google.com/*"
+  ],
+  "icons": {
+    "128": "icons/icon128.png",
+    "16": "icons/icon16.png",
+    "48": "icons/icon48.png"
+  },
+  "manifest_version": 3,
+  "name": "RetroCam 98",
+  "permissions": [
+    "storage",
+    "sidePanel"
+  ],
+  "side_panel": {
+    "default_path": "studio.html"
+  },
+  "version": "0.2.1"
+}
